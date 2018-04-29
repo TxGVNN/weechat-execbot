@@ -1,0 +1,18 @@
+== About =====================
+Execbot is a bot can execute the command from IRC message
+(You maybe want to call it is a kind of backdoor)
+
+With server is installed execbot script, the client can execute the
+command remote by send privmsg to server's nick in IRC network
+
+== Usage =====================
+/excebot list                                List server.nicknames are allowed
+/execbot add -server <server> nicknames..    Add server.nicknames are allowed to execute
+/execbot del -server <server> nicknames..    Remove server.nicknames are allowed
+
+== NOTICE ====================
+This is a POC that I want to execute a remote command via IRC
+network. It's really not security, although you can set who can
+talk with the bot.
+
+PLEASE CONSIDER CAREFULLY WHEN USING THE PLUGIN
