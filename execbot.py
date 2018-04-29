@@ -183,6 +183,7 @@ if __name__ == '__main__' and weechat.register(SCRIPT_NAME, SCRIPT_AUTHOR,
     weechat.hook_command('execbot', 'Commands to manage Execbot options and execute Execbot commands',
                          '',
                          SCRIPT_HELP_TEXT,
-                         '',
+                         'list %- || add -server %(irc_servers) %(nicks) %-'
+                         '|| del -server %(irc_servers) %(nicks) %-',
                          'execbot_command', '')
     weechat.hook_signal("*,irc_in_privmsg", "execbot_hook_signal", "")
