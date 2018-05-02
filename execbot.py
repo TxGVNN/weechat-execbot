@@ -160,8 +160,8 @@ def execbot_hook_signal(data, signal, signal_data):
     # Execute command
     _, message = info['arguments'].split(':', 1)
     try:
-        p = subprocess.Popen(message.split(' '), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out,err = p.communicate()
+        p = subprocess.Popen(message.split(' '), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        out,_ = p.communicate()
         reply = '\n'.join(['%s' % (x) for x in out.split('\n')])
     except OSError as err:
         reply = err.strerror
