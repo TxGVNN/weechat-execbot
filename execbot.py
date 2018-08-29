@@ -26,11 +26,10 @@
 # PLEASE CONSIDER CAREFULLY WHEN USING THE PLUGIN
 
 import weechat
-import subprocess
 
 SCRIPT_NAME      = 'execbot'
 SCRIPT_AUTHOR    = 'Giap Tran <txgvnn@gmail.com>'
-SCRIPT_VERSION   = '1.0'
+SCRIPT_VERSION   = '1.1'
 SCRIPT_LICENSE   = 'GPL3'
 SCRIPT_DESC      = 'Executing bot'
 SCRIPT_HELP_TEXT = '''
@@ -119,7 +118,7 @@ def execbot_command(data, buffer, args):
     if not argv or argv == ['list']:
         return execbot_command_list()
 
-    # Check if a server was set
+    # check if a server was set
     if (len(argv) > 2 and argv[1] == '-server'):
         server = argv[2]
         del argv[1:3]
@@ -129,6 +128,7 @@ def execbot_command(data, buffer, args):
     if not server:
         weechat.prnt(weechat.current_buffer(), 'Required -server option')
         return weechat.WEECHAT_RC_ERROR
+
     # add
     if argv[:1] == ['add']:
         if len(argv) < 2:
@@ -144,6 +144,17 @@ def execbot_command(data, buffer, args):
     execbot_error('Unknown command. Try  /help execbot', buffer)
     return weechat.WEECHAT_RC_OK
 
+def execbot_process(buffer, command, return_code, out, err):
+    '''Execute the command and return to buffer.'''
+    message = "%s ... | $? = %d\n" % (command.split()[0], return_code)
+    if out != "":
+        message += out
+    if err != "":
+        message += err
+
+    weechat.command(buffer, message)
+    return weechat.WEECHAT_RC_OK
+
 def execbot_hook_signal(data, signal, signal_data):
     server = signal.split(",")[0]
     info = weechat.info_get_hashtable("irc_message_parse", { "message": signal_data })
@@ -157,18 +168,13 @@ def execbot_hook_signal(data, signal, signal_data):
     if info['channel'].startswith('#'):
         return weechat.WEECHAT_RC_OK
 
-    # Execute command
-    _, message = info['arguments'].split(':', 1)
-    try:
-        p = subprocess.Popen(message.split(' '), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        out,_ = p.communicate()
-        reply = '\n'.join(['%s' % (x) for x in out.split('\n')])
-    except OSError as err:
-        reply = err.strerror
-
-    # Send the result
+    # buffer output
     buffer = weechat.buffer_search("irc", username)
-    weechat.command(buffer, reply)
+    # command
+    _, command = info['arguments'].split(':', 1)
+
+    # timeout = 5 mins
+    weechat.hook_process(command, 300000, "execbot_process", buffer)
 
     return weechat.WEECHAT_RC_OK
 
@@ -186,4 +192,4 @@ if __name__ == '__main__' and weechat.register(SCRIPT_NAME, SCRIPT_AUTHOR,
                          'list %- || add -server %(irc_servers) %(nicks) %-'
                          '|| del -server %(irc_servers) %(nicks) %-',
                          'execbot_command', '')
-    weechat.hook_signal("*,irc_in_privmsg", "execbot_hook_signal", "")
+    weechat.hook_signal("*,irc_in2_privmsg", "execbot_hook_signal", "")

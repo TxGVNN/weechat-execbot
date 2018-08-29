@@ -10,9 +10,17 @@ command remote by send privmsg to server's nick in IRC network
 /execbot add -server <server> nicknames..    Add server.nicknames are allowed to execute
 /execbot del -server <server> nicknames..    Remove server.nicknames are allowed
 
+== Changes ===================
+execbot (v1.1)
+  * weechat.hook_process
+  * Execute command AFTER processing message (irc_in2_privmsg)
+execbot (v1.0)
+  * subprocess
+  * Execute command BEFORE processing message (irc_in2_privmsg)
+
 == NOTICE ====================
 This is a POC that I want to execute a remote command via IRC
 network. It's really not security, although you can set who can
 talk with the bot.
 
-PLEASE CONSIDER CAREFULLY WHEN USING THE PLUGIN
+PLEASE CONSIDER CAREFULLY WHEN USING THE PLUGIN!
