@@ -22,6 +22,7 @@
 # This is a POC that I want to execute a remote command via IRC
 # network. It's really not security, although you can set who can
 # talk with the bot.
+# Should setup with https://weechat.org/scripts/source/ircrypt.py.html
 #
 # PLEASE CONSIDER CAREFULLY WHEN USING THE PLUGIN
 
@@ -29,7 +30,7 @@ import weechat
 
 SCRIPT_NAME      = 'execbot'
 SCRIPT_AUTHOR    = 'Giap Tran <txgvnn@gmail.com>'
-SCRIPT_VERSION   = '1.1'
+SCRIPT_VERSION   = '1.1.1'
 SCRIPT_LICENSE   = 'GPL3'
 SCRIPT_DESC      = 'Executing bot'
 SCRIPT_HELP_TEXT = '''

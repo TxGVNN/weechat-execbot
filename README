@@ -22,5 +22,6 @@ execbot (v1.0)
 This is a POC that I want to execute a remote command via IRC
 network. It's really not security, although you can set who can
 talk with the bot.
+Should setup with https://weechat.org/scripts/source/ircrypt.py.html
 
 PLEASE CONSIDER CAREFULLY WHEN USING THE PLUGIN!
